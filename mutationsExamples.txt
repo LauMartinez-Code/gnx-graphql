@@ -1,0 +1,142 @@
+
+------------EMPLOYEES--------------
+mutation{
+  addemployee(input: {
+    dni:45699542
+    first_name:"Juan"
+    last_name: "Loop"
+    birth_date: "1990-12-30"
+    hire_date: "2015-08-17"
+    gender:MASC
+  }){
+    id,
+    dni,
+    first_name,
+    last_name,
+    birth_date,
+    hire_date,
+    gender
+  }
+}
+
+mutation{
+  updateemployee(input: {
+    id: "5eeae71c2b8786118020da98" 
+    dni:45645999
+    first_name:"Juan"
+    last_name: "Loop"
+    birth_date: "1990-12-30"
+    hire_date: "2015-08-17"
+    gender:FEM
+  }){
+    id,
+    dni,
+    first_name,
+    last_name,
+    birth_date,
+    hire_date,
+    gender
+  }
+}
+
+***********validar q no tenga mas de un salario en esas fechas
+mutation{
+   addsalary(input: {
+    employee:{id:"5eeaa2a64023a108cc2c10b5"}
+    salary:25000
+    from_date: "1999-12-20"
+    to_date: "2000-06-20"
+  }){
+    id,
+    employee{
+      id,
+      first_name,
+      last_name
+    },
+    salary,
+    from_date,
+    to_date
+  }
+}
+
+mutation{
+   addtitle(input: {
+    employee:{id:"5eeaa2a64023a108cc2c10b5"}
+    title: "Programmer"
+    from_date: "1999-12-20"
+    to_date: "2000-06-20"
+  }){
+    id,
+    employee{
+      id,
+      first_name,
+      last_name
+    },
+    title,
+    from_date,
+    to_date
+  }
+}
+
+mutation{
+   adddepartment(input: {
+    name:"Dirección General"
+  }){
+    id,
+    name
+  }
+}
+
+mutation{
+   adddeptManager(input: {
+    employee: {
+      id:"5eeace9d51c48316c04df37c"
+    }
+    department:{
+      id:"5eeacf3d51c48316c04df37f"
+    }
+    from_date: "1999-12-07"
+    to_date: "2001-06-20"
+  }){
+    id,
+    employee{
+      id,
+      first_name,
+      last_name
+    },
+    department{
+      id,
+      name
+    }
+    from_date,
+    to_date
+  }
+}
+
+
+mutation{
+   adddeptEmployees(input: {
+    employee: {
+      id:"5eeace9d51c48316c04df37c"
+    }
+    department:{
+      id:"5eeacf3d51c48316c04df37f"
+    }
+    from_date: "1999-12-07"
+    to_date: "2001-06-20"
+  }){
+    id,
+    employee{
+      id,
+      first_name,
+      last_name
+    },
+    department{
+      id,
+      name
+    }
+    from_date,
+    to_date
+  }
+}
+

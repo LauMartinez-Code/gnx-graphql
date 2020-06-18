@@ -1,0 +1,24 @@
+{
+  "name": "gnx-graphql",
+  "version": "1.0.0",
+  "description": "Read the README.md file to know functionalities of this application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Lautaro Martinez",
+  "license": "ISC",
+  "dependencies": {
+    "@simtlix/gnx": "^2.4.7",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^15.1.0",
+    "graphql-iso-date": "^3.6.1",
+    "mongoose": "^5.9.19"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
