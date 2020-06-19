@@ -4,23 +4,24 @@ const EmployeeModel = require("../models/employee").Employee;
 const SalaryModel = require("../models/salary").Salary;
 const { GraphQLDate } = require('graphql-iso-date');
 const { DateValidation, ValidateRelatedID } = require('../validators/commonValidations');
+const { VerifyDatesOverlap } = require('../validators/salary.validator');
 
 const {
   GraphQLObjectType,
-  GraphQLString,
   GraphQLID,
   GraphQLFloat,
-  GraphQLList,
   GraphQLNonNull,
 } = graphql;
+
+const validationFunctions = [ValidateRelatedID, DateValidation, VerifyDatesOverlap];
 
 const SalaryType = new GraphQLObjectType({
   name: "SalaryType",
   description: "Represent Salaries",
   extensions: {
     validations: {
-      CREATE: [ValidateRelatedID, DateValidation],
-      UPDATE: [ValidateRelatedID, DateValidation],
+      CREATE: validationFunctions,
+      UPDATE: validationFunctions
     }
   },
   fields: () => ({

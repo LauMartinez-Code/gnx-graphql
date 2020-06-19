@@ -2,6 +2,7 @@ const gnx = require("@simtlix/gnx");
 const GNXError = gnx.GNXError;
 const EmployeeModel = require("../models/employee").Employee;
 
+//1 - Can't exist more than one employee with the same dni
 const CantRepeatDNI = {
   
   validate: async function (typeName, originalObject, materializedObject) {
@@ -25,6 +26,7 @@ class EmployeeWithDniRepeatedException extends GNXError {
   }
 }
 
+//2 - Employee must have more than 18 years old
 const BeOfAge = {
   validate: async function (typeName, originalObject, materializedObject) {
     let today = new Date();
@@ -44,19 +46,17 @@ const BeOfAge = {
     }
 
     /*
-        this other solution works but it is less precise although simpler
+      this other solution works but it is less precise although simpler
 
-        today.setMilliseconds(0);
-        today.setMinutes(0);
-        today.setUTCHours(0);
-        let age = today - materializedObject.birth_date; //the result is in milliseconds
-        age /= 60044;   //convert milliseconds to minutes
-        age /= 525604;  //convert to years
-        console.log('Age: ', age);
-        if(age < 18){
-            throw new EmployeeIsUnderAgeOf18Exception(typeName);
-        }
-        */
+      today.setUTCHours(0,0,0,0);
+      let age = today - materializedObject.birth_date; //the result is in milliseconds
+      age /= 60044;   //convert milliseconds to minutes
+      age /= 525604;  //convert to years
+      console.log('Age: ', age);
+      if(age < 18){
+          throw new EmployeeIsUnderAgeOf18Exception(typeName);
+      }
+    */
   },
 };
 

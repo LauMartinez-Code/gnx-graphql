@@ -5,23 +5,23 @@ const DepartmentModel = require("../models/department").Department;
 const DeptEmployeesModel = require("../models/dept_employees").DeptEmployees;
 const { GraphQLDate } = require('graphql-iso-date');
 const { DateValidation, ValidateRelatedID } = require('../validators/commonValidations');
+const { VerifyDatesOverlap } = require('../validators/departments.validator');
 
 const {
     GraphQLObjectType,
-    GraphQLString,
     GraphQLID,
-    GraphQLFloat,
-    GraphQLList,
     GraphQLNonNull,
 } = graphql;
+
+const validationFunctions = [ValidateRelatedID, DateValidation, VerifyDatesOverlap];
 
 const DeptEmployeesType = new GraphQLObjectType({
   name: "DeptEmployeesType",
   description: "Represent Departments Employees",
   extensions: {
     validations: {
-      CREATE: [ValidateRelatedID, DateValidation],
-      UPDATE: [ValidateRelatedID, DateValidation],
+      CREATE: validationFunctions,
+      UPDATE: validationFunctions
     }
   },
   fields: () => ({

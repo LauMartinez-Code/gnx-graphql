@@ -4,6 +4,7 @@ const DepartmentModel = require("../models/department").Department;
 const DeptManagerModel = require("../models/dept_manager").DeptManager;
 const DeptEmployeesModel = require("../models/dept_employees").DeptEmployees;
 const { CantRepeatDepartmentName } = require('../validators/departments.validator');
+const { CheckForRelatedElements } = require('../validators/commonValidations');
 
 const {
   GraphQLObjectType,
@@ -20,6 +21,7 @@ const DepartmentType = new GraphQLObjectType({
     validations: {
       CREATE: [CantRepeatDepartmentName],
       UPDATE: [CantRepeatDepartmentName],
+      DELETE: [CheckForRelatedElements]
     },
   },
   fields: () => ({

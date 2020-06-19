@@ -12,10 +12,9 @@ connectionOptions = {
   replicaSet: 'rs'
 }
 
-//mongoose.connect('mongodb://localhost:27017,localhost:27018,localhost:27019/example', connectionOptions) 
 const connectWithRetry = () => {
   console.log('Connecting to database...');
-  mongoose.connect('mongodb://192.168.0.14:27017,192.168.0.14:27018,192.168.0.14:27019/example', connectionOptions)
+  mongoose.connect('mongodb://localhost:27017,localhost:27018,localhost:27019/example', connectionOptions) 
   //mongoose.connect('mongodb://YourIP:27017,YourIP:27018,YourIP:27019/example', connectionOptions) //if have problems connecting whith mongoDB try this line instead of the previous one
   .then(() => {                                                                         //change 'localhost' to your IP adress(e.g. 191.167.0.15)
     console.log('--> MongoDB is connected <--');
@@ -24,6 +23,7 @@ const connectWithRetry = () => {
     setTimeout(connectWithRetry, 5000);
   })
 }
+
 connectWithRetry();
 
 mongoose.connection.once('open', () => {

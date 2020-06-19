@@ -1,19 +1,17 @@
 const gnx = require("@simtlix/gnx");
-const { employeeFields } = require("../models/employee");
 const GNXError = gnx.GNXError;
 const EmployeeModel = require("../models/employee").Employee;
-//const {Salary} = require("../models/salary");
-//const TitleModel = require("../models/title").Title;
+const SalaryModel = require("../models/salary").Salary;
+const TitleModel = require("../models/title").Title;
 const DepartmentModel = require("../models/department").Department;
-//const DeptManagerModel = require("../models/dept_manager").DeptManager;
-//const DeptEmployeesModel = require("../models/dept_employees").DeptEmployees;
+const DeptManagerModel = require("../models/dept_manager").DeptManager;
+const DeptEmployeesModel = require("../models/dept_employees").DeptEmployees;
 
 
 const ValidateRelatedID = {
   validate: async function (typeName, originalObject, materializedObject) {
     
     await ValidateID(EmployeeModel, materializedObject.EmployeeID, 'EmployeeID');
-    
 
     if (typeName == 'DeptManagerType' || typeName == 'DeptEmployeesType') {
         await ValidateID(DepartmentModel, materializedObject.DepartmentID, 'DepartmentID');
@@ -37,9 +35,10 @@ class IDRelatedDoNotExistsException extends GNXError {
       `You must specify a valid ${fieldName}. Check the data and try again`,
       "IDRelatedDoNotExistsException"
     );
-  }//substring(0,typeName.length-4)
+  }
 }
 
+//3 - In all the collections from_date must be smaller than to_date
 const DateValidation = {
   validate: async function (typeName, originalObject, materializedObject) {
     if (materializedObject.from_date >= materializedObject.to_date) {
@@ -58,4 +57,46 @@ class WrongDateRangeException extends GNXError {
   }
 }
 
-module.exports = { DateValidation, ValidID: ValidateRelatedID };
+//10 - Can't delete a child from a relation
+const CheckForRelatedElements = {
+  validate: async function (typeName, originalObject, materializedObject) {
+
+    let SomethingFinded;
+
+    if (typeName == 'EmployeeType') {
+      
+      SomethingFinded = await SalaryModel.findOne({ EmployeeID: originalObject });
+      if (SomethingFinded) { throw new HasRelatedElementsException(typeName, 'Salary') }
+      
+      SomethingFinded = await TitleModel.findOne({ EmployeeID: originalObject });
+      if (SomethingFinded) { throw new HasRelatedElementsException(typeName, 'Title') }
+
+      SomethingFinded = await DeptManagerModel.findOne({ EmployeeID: originalObject });
+      if (SomethingFinded) { throw new HasRelatedElementsException(typeName, 'DeptManager') }
+
+      SomethingFinded = await DeptEmployeesModel.findOne({ EmployeeID: originalObject });
+      if (SomethingFinded) { throw new HasRelatedElementsException(typeName, 'DeptEmployees') }
+
+    } else{ //DepartmentType
+
+      SomethingFinded = await DeptManagerModel.findOne({ DepartmentID: originalObject });
+      if (SomethingFinded) { throw new HasRelatedElementsException(typeName, 'DeptManager') }
+
+      SomethingFinded = await DeptEmployeesModel.findOne({ DepartmentID: originalObject });
+      if (SomethingFinded) { throw new HasRelatedElementsException(typeName, 'DeptEmployees') }
+    }
+  }
+};
+
+class HasRelatedElementsException extends GNXError {
+  constructor(typeName, relation) {
+    super(
+      typeName,
+      `${typeName.substring(0, typeName.length-4)} have at least 1 ${relation} related`,
+      "HasRelatedElementsException"
+    );
+  }
+}
+
+
+module.exports = { DateValidation, ValidateRelatedID, CheckForRelatedElements};

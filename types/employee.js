@@ -5,10 +5,12 @@ const SalaryModel = require("../models/salary").Salary;
 const TitleModel = require("../models/title").Title;
 const DeptManagerModel = require("../models/dept_manager").DeptManager;
 const DeptEmployeesModel = require("../models/dept_employees").DeptEmployees;
-const GenderEnumType = require("../types/enums/gender.enum");
 const { AuditableObjectFields } = require("../types/extended_types/auditableGraphQLObjectType");
 const { GraphQLDate } = require("graphql-iso-date");
+const GenderEnumType = require("../types/enums/gender.enum");
 const { CantRepeatDNI, BeOfAge } = require('../validators/employee.validator');
+const { CheckForRelatedElements } = require('../validators/commonValidations');
+
 
 const {
   GraphQLObjectType,
@@ -27,6 +29,7 @@ const EmployeeType = new GraphQLObjectType({
     validations: {
       CREATE: [CantRepeatDNI, BeOfAge],
       UPDATE: [CantRepeatDNI, BeOfAge],
+      DELETE: [CheckForRelatedElements]
     },
   },
   fields: () =>

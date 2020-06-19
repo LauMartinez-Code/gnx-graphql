@@ -1,8 +1,6 @@
 const { GraphQLEnumType } = require('graphql');
-/* const {
-  GraphQLEnumType,
-} = graphql; */
 
+//6 - Gender must be implemented as Enum
 const GenderEnumType = new GraphQLEnumType({
   name: 'GenderEnumType',
   description: 'represents possible values ​​for the genres',
