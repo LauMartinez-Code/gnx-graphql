@@ -59,7 +59,7 @@ npm run dev
 ```
 
 To test the GraphQL queries through GraphiQL access to
-localhost:3000/graphql
+[http://localhost:3000/graphql](http://localhost:3000/graphql) to view it in the browser.
 
 # Extras
 To interact with mongodb you can use mongo-express
