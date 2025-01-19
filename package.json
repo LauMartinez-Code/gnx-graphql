@@ -16,7 +16,7 @@
     "express-graphql": "^0.9.0",
     "graphql": "^15.1.0",
     "graphql-iso-date": "^3.6.1",
-    "mongoose": "^6.13.5"
+    "mongoose": "^8.9.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.21"
